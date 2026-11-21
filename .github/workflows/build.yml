@@ -5,7 +5,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: unzip -q "Uply-Android.zip new.zip"
+        with: { fetch-depth: 0 }
+      - run: |
+          f=$(git log -1 --name-only --format= -- '*.zip' | head -1)
+          echo "Using: $f"
+          unzip -oq "$f"
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: 17 }
       - uses: gradle/actions/setup-gradle@v4
